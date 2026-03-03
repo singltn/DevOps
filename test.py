@@ -16,5 +16,5 @@ def test_add_negative_numbers():
 def test_add_zero():
     assert sample_add(0, 0) == 0
 
-    def test_add_one():
+def test_add_one():
     assert sample_add(1, 0) == 1
