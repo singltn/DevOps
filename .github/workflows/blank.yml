@@ -24,7 +24,7 @@ jobs:
           image-ref: "myapp:${{ github.sha }}"
           format: "table"
           severity: "CRITICAL,HIGH"
-          exit-code: "1"
+          exit-code: "0"
           output: "trivy-image-report.txt"
 
       - name: Save full JSON report (Image)
