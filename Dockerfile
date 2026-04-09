@@ -1,17 +1,17 @@
-FROM python:3.13-slim as builder
-COPY --from=ghcr.io/astral-sh/uv:0.4.9 /uv /bin/uv
-ENV UV_COMPILE_BYTECODE=1 UV_LINK_MODE=copy
-WORKDIR /app
-COPY pyproject.toml uv.lock ./
-RUN --mount=type=cache,target=/root/.cache/uv 
-  uv sync --frozen --no-install-project
 FROM python:3.13-slim
-COPY --from=ghcr.io/astral-sh/uv:0.4.9 /uv /bin/uv
-ENV UV_COMPILE_BYTECODE=1
-ENV UV_LINK_MODE=copy
-ENV PYTHONUNBUFFERED=1
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    gcc \
+    && rm -rf /var/lib/apt/lists/*
+
 WORKDIR /app
-COPY --from=builder /app /app
+
+COPY requirements.txt .
+
+RUN pip install --no-cache-dir -r requirements.txt
+
 COPY . .
+
 EXPOSE 8080
-CMD ["uv", "run", "api_start.py"]
+
+CMD ["python", "api_start.py"]
